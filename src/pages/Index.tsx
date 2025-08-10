@@ -4,6 +4,8 @@ import LoadingScreen from "@/components/screens/LoadingScreen";
 import ResultsScreen from "@/components/screens/ResultsScreen";
 import Logo from "@/components/Logo";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Home } from "lucide-react";
 
 const Index = () => {
   const [step, setStep] = useState<'input'|'loading'|'results'>("input");
@@ -24,6 +26,9 @@ const Index = () => {
           <div className="py-6 space-y-6 animate-fade-in">
             <header className="flex items-center justify-between">
               <Logo />
+              <Button variant="glass" size="sm" onClick={() => setStep('input')} aria-label="Go Home">
+                <Home />
+              </Button>
             </header>
             <main>
               <h1 className="sr-only">Hedging with AI</h1>

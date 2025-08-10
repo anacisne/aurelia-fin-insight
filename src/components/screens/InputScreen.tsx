@@ -22,7 +22,7 @@ type Props = {
 
 const InputScreen: React.FC<Props> = ({ onAnalyze }) => {
   const [ticker, setTicker] = useState("");
-  const [timeframe, setTimeframe] = useState("Daily");
+  const [timeframe, setTimeframe] = useState("60 days");
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [fileName, setFileName] = useState<string | undefined>(undefined);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -55,9 +55,9 @@ const InputScreen: React.FC<Props> = ({ onAnalyze }) => {
                   <SelectValue placeholder="Time Frame" />
                 </SelectTrigger>
                 <SelectContent className="z-50">
-                  <SelectItem value="Daily">Daily</SelectItem>
-                  <SelectItem value="Weekly">Weekly</SelectItem>
-                  <SelectItem value="Monthly">Monthly</SelectItem>
+                  <SelectItem value="30 days">30 days</SelectItem>
+                  <SelectItem value="60 days">60 days</SelectItem>
+                  <SelectItem value="90 days">90 days</SelectItem>
                 </SelectContent>
               </Select>
             </div>
