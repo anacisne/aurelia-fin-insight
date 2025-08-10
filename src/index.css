@@ -1,13 +1,12 @@
+/* Tailwind layers */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
+/* Design system tokens - HSL only */
 @layer base {
   :root {
+    /* Light (not primary for this app, but kept for parity) */
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
@@ -36,54 +35,64 @@ All colors MUST be HSL.
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Neon accents */
+    --neon-cyan: 180 100% 50%;
+    --neon-orange: 21 100% 55%;
+    --neon-yellow: 48 100% 52%;
+    --neon-green: 145 85% 48%;
+    --neon-red: 0 90% 58%;
+
+    /* Glass tokens */
+    --glass-bg: 0 0% 100%;
+    --glass-border: 0 0% 100%;
+
+    /* Brand gradients */
+    --bg-gradient-start: 230 65% 10%;
+    --bg-gradient-end: 275 50% 18%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    /* Dark theme (default) */
+    --background: 230 65% 10%; /* deep navy */
     --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
+    --card: 235 45% 12%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222.2 84% 4.9%;
+    --popover: 234 50% 11%;
     --popover-foreground: 210 40% 98%;
 
     --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary-foreground: 232 47% 12%;
 
-    --secondary: 217.2 32.6% 17.5%;
+    --secondary: 242 36% 16%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 217.2 32.6% 17.5%;
+    --muted: 242 36% 16%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 217.2 32.6% 17.5%;
+    --accent: 275 42% 20%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
+    --border: 235 36% 20%;
+    --input: 235 36% 20%;
     --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
+
+    --sidebar-background: 235 45% 12%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
@@ -91,15 +100,63 @@ All colors MUST be HSL.
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Dark brand gradient */
+    --bg-gradient-start: 230 65% 10%; /* #0a0f2c approx */
+    --bg-gradient-end: 278 52% 17%; /* #2b144d approx */
+
+    /* Glass tokens tuned for dark */
+    --glass-bg: 0 0% 100%;
+    --glass-border: 0 0% 100%;
   }
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground font-sans antialiased; }
+}
 
-  body {
-    @apply bg-background text-foreground;
+/* Utilities & component styles */
+@layer utilities {
+  .gradient-aurora {
+    background: linear-gradient(120deg,
+      hsl(var(--bg-gradient-start)) 0%,
+      hsl(260 70% 14%) 45%,
+      hsl(var(--bg-gradient-end)) 100%
+    );
+    background-size: 200% 200%;
+    animation: bg-pan 5s ease-in-out infinite alternate;
   }
+  .glass-panel {
+    background: linear-gradient(
+      180deg,
+      hsl(var(--glass-bg)/0.10),
+      hsl(var(--glass-bg)/0.06)
+    );
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid hsl(var(--glass-border)/0.18);
+    box-shadow: 0 10px 30px -10px hsl(var(--neon-cyan)/0.25);
+  }
+  .hover-scale { @apply transition-transform duration-200 hover:scale-105; }
+  .pulse-glow { animation: glow-pulse 2s ease-in-out infinite alternate; }
+  .underline-animated { position: relative; }
+  .underline-animated::after {
+    content: "";
+    position: absolute; left: 0; bottom: -6px; height: 3px;
+    background: hsl(var(--neon-yellow)); border-radius: 9999px; width: 0%;
+    animation: underline-sweep 900ms ease-out forwards;
+  }
+  .spotlight-bg {
+    background: radial-gradient(1200px 600px at 0% 0%, hsl(var(--neon-cyan)/0.08), transparent 60%),
+                radial-gradient(1200px 600px at 100% 100%, hsl(var(--neon-orange)/0.08), transparent 60%);
+    background-size: 200% 200%;
+    animation: spotlight 12s linear infinite;
+  }
+  .shimmer {
+    background-image: linear-gradient(90deg, transparent, hsl(var(--foreground)/0.12), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 1.8s linear infinite;
+  }
+  .spin-slow { animation: spin-slow 12s linear infinite; }
 }
